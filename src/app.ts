@@ -7,6 +7,7 @@ import express from 'express';
 import { useExpressServer, useContainer as rcUseContainer } from 'routing-controllers';
 import { AppDataSource } from './typeorm-data-source';
 import { registerRepositories } from './repositories/Index';
+import cors from 'cors';
 
 async function initApp() {
   const app = express();
@@ -22,6 +23,13 @@ async function initApp() {
   } catch (err) {
     console.error("Error during Data Source initialization:", err)
   }
+
+  const corsOptions ={
+    origin:'http://localhost:3002', 
+    credentials: true, //access-control-allow-credentials:true
+    optionSuccessStatus: 200
+  }
+  app.use(cors(corsOptions));
 
   // Remove the X-Powered-By header for security reason
   app.disable('x-powered-by');
